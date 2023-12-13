@@ -1,0 +1,40 @@
+name: ir-sde
+suffix: _t1  # add suffix to saved images
+model: denoising
+gpu_ids: [5]
+
+sde:
+  max_sigma: 75
+  T: 100
+  schedule: sigmoid # cosine # linear #sigmoid # pow
+
+degradation:
+  sigma: 25 #25
+  noise_type: G # Gaussian noise: G
+
+datasets:
+  test1:
+    name: McMaster
+    mode: GT
+    dataroot_GT: /data/yejin/SDE/dataset/McMaster/McM
+  test2:
+    name: Kodak24
+    mode: GT
+    dataroot_GT: /data/yejin/SDE/dataset/Kodak24/Kodak24
+  test3:
+    name: CBSD68
+    mode: GT
+    dataroot_GT: /data/yejin/SDE/dataset/CBSD68/CBSD68-dataset-master/CBSD68/original_png
+
+#### network structures
+network_G:
+  which_model_G: ConditionalUNet
+  setting:
+    in_nc: 3
+    out_nc: 3
+    nf: 64
+    depth: 4
+
+#### path
+path:
+  pretrain_model_G: /data/yejin/SDE/experiments/denoising-sde/ir-sde/models/100000_G.pth
